@@ -4,7 +4,8 @@ namespace inventor96\F3TestManager;
 use Test;
 
 abstract class TestBase {
-	private $me;
+	/** @var array $me The names of classes that we don't want to use for displaying the tester method */
+	protected $excluded_classes = [];
 
 	/** @var Test $test The test instance */
 	protected $test;
@@ -14,9 +15,9 @@ abstract class TestBase {
 	 *
 	 * @param \Test $test_instance The instance of the F3 `Test` class in which to store the tests
 	 */
-	public function __construct(Test &$test_instance) {
+	public function __construct(Test &$test_instance, array $excluded_classes = []) {
 		$this->test = $test_instance;
-		$this->me = get_class();
+		$this->excluded_classes = array_merge([get_class()], $excluded_classes);
 	}
 
 	/**
@@ -30,7 +31,7 @@ abstract class TestBase {
 		$trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 		foreach ($trace as $i => $t) {
 			// don't want internal stuff
-			if ($t['class'] === $this->me) {
+			if (in_array($t['class'], $this->excluded_classes, true)) {
 				continue;
 			}
 
