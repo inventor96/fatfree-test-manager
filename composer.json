@@ -1,0 +1,26 @@
+{
+    "name": "inventor96/fatfree-test-manager",
+    "description": "A lightweight class to run and report the results from unit tests using the Fat-Free Framework Test class.",
+    "keywords": [
+        "fatfree",
+        "testing",
+        "unit testing"
+    ],
+    "homepage": "https://github.com/inventor96/fatfree-test-manager",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "inventor96",
+            "homepage": "https://github.com/inventor96",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "inventor96\\F3TestManager\\": "src/"
+        }
+    },
+    "require": {
+        "bcosca/fatfree-core": "^3.7"
+    }
+}
