@@ -40,6 +40,37 @@ By default, `runAndReportTests()` and `reportTests()` will end the PHP process w
 use inventor96\F3TestManager\TestBase;
 
 class ExampleTest extends TestBase {
+	private $pre_class_called = 0;
+	private $post_class_called = 0;
+	private $pre_test_called = 0;
+	private $post_test_called = 0;
+
+	public function preClass() {
+		$this->pre_class_called++;
+	}
+
+	public function postClass() {
+		$this->post_class_called++;
+
+		echo "preClass() called: {$this->pre_class_called}".PHP_EOL;
+		echo "postClass() called: {$this->post_class_called}".PHP_EOL;
+		echo "preTest() called: {$this->pre_test_called}".PHP_EOL;
+		echo "postTest() called: {$this->post_test_called}".PHP_EOL;
+	}
+
+	public function preTest() {
+		$this->pre_test_called++;
+	}
+
+	public function postTest() {
+		$this->post_test_called++;
+	}
+
+	private function testThisShouldNeverGetCalled() {
+		// private methods should never get called by the TestManager
+		$this->expect(false, 'This is not the method you are looking for...');
+	}
+
 	public function testPassExample() {
 		$this->expect(true, 'the message for a passing test');
 	}
@@ -81,16 +112,24 @@ Running the tests would look like this:
 $ php test_runner.php 
 
 Running tests using separate calls.
-PASS: ExampleTest::testPassExample() // ExampleTest.php:7 - the message for a passing test
-FAIL: ExampleTest::testFailExample() // ExampleTest.php:11 - the message for a failed test
-PASS: ExampleTest::testPassAndFailExample() // ExampleTest.php:15
-FAIL: ExampleTest::testPassAndFailExample() // ExampleTest.php:16
-FAIL: ExampleTest::testWithException() // ExampleTest.php:20 - Exception: This is the message for an exception
+preClass() called: 1
+postClass() called: 1
+preTest() called: 4
+postTest() called: 4
+PASS: ExampleTest::testPassExample() // ExampleTest.php:38 - the message for a passing test
+FAIL: ExampleTest::testFailExample() // ExampleTest.php:42 - the message for a failed test
+PASS: ExampleTest::testPassAndFailExample() // ExampleTest.php:46
+FAIL: ExampleTest::testPassAndFailExample() // ExampleTest.php:47
+FAIL: ExampleTest::testWithException() // ExampleTest.php:51 - Exception: This is the message for an exception
 
 Running tests using one call.
-PASS: ExampleTest::testPassExample() // ExampleTest.php:7 - the message for a passing test
-FAIL: ExampleTest::testFailExample() // ExampleTest.php:11 - the message for a failed test
-PASS: ExampleTest::testPassAndFailExample() // ExampleTest.php:15
-FAIL: ExampleTest::testPassAndFailExample() // ExampleTest.php:16
-FAIL: ExampleTest::testWithException() // ExampleTest.php:20 - Exception: This is the message for an exception
+preClass() called: 1
+postClass() called: 1
+preTest() called: 4
+postTest() called: 4
+PASS: ExampleTest::testPassExample() // ExampleTest.php:38 - the message for a passing test
+FAIL: ExampleTest::testFailExample() // ExampleTest.php:42 - the message for a failed test
+PASS: ExampleTest::testPassAndFailExample() // ExampleTest.php:46
+FAIL: ExampleTest::testPassAndFailExample() // ExampleTest.php:47
+FAIL: ExampleTest::testWithException() // ExampleTest.php:51 - Exception: This is the message for an exception
 ```

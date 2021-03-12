@@ -68,21 +68,47 @@ class TestManager {
 			require_once($file);
 			$tester_class_name = "{$namespace}\\{$class}";
 			$tester = new $tester_class_name($test_instance);
+			$methods = get_class_methods($tester);
+
+			// check for pre- and post- class and test methods
+			$has_pre_class = in_array('preClass', $methods);
+			$has_post_class = in_array('postClass', $methods);
+			$has_pre_test = in_array('preTest', $methods);
+			$has_post_test = in_array('postTest', $methods);
+
+			// call pre-class
+			if ($has_pre_class) {
+				$tester->preClass();
+			}
 
 			// call each testing method
-			$methods = get_class_methods($tester);
 			foreach ($methods as $method) {
 				// only call methods that start with 'test'
 				if (strpos($method, 'test') !== 0) {
 					continue;
 				}
-				
+
+				// call pre-test
+				if ($has_pre_test) {
+					$tester->preTest();
+				}
+
 				// catch and report any errors that might happen
 				try {
 					$tester->{$method}();
 				} catch (\Throwable $err) {
 					$test_instance->expect(false, ltrim($tester_class_name, '\\').'::'.$method.'() // '.basename($err->getFile()).':'.$err->getLine().' - Exception: '.$err->getMessage());
 				}
+
+				// call post-test
+				if ($has_post_test) {
+					$tester->postTest();
+				}
+			}
+
+			// call post-class
+			if ($has_post_class) {
+				$tester->postClass();
 			}
 		}
 	}
