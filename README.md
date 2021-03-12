@@ -1,5 +1,5 @@
 # Fat-Free Test Manager
-A lightweight class to run and report the results from unit tests using the Fat-Free Framework `Test` class.
+A lightweight class to run and report the results from unit tests using the [Fat-Free Framework `Test` class](https://fatfreeframework.com/3.7/test).
 
 ## Installation
 ```
@@ -25,6 +25,16 @@ class MyTestBase extends TestBase {
 	}
 }
 ```
+
+### Running code before/after test classes and methods
+If a test class (or a class it extends) has a method named `preClass()`, `preTest()`, `postTest()`,  or `postClass()`; each method will be called at the respective time.
+
+| Method | Called Time |
+| ------ | ----------- |
+| `preClass()` | Immediately after the class is instantiated |
+| `preTest()` | Before each `test*()` method in the class |
+| `postTest()` | After each `test*()` method in the class |
+| `postClass()` | After all tests in the class have been run, and `postTest()` has been called (if present) |
 
 ### Multiple Folders
 If you have more than one folder with tests, you can create an instance of the [Fat-Free Framework `Test` class](https://fatfreeframework.com/3.7/test) and call `TestManager::runTests('a/directory/with/tests', $your_instance_of_Test);` for each directory, then call `TestManager::reportTests($your_instance_of_Test);` at the end.
