@@ -1,5 +1,5 @@
 # Fat-Free Test Manager
-A lightweight class to run and report the results from unit tests using the Fat-Free Framework Test class.
+A lightweight class to run and report the results from unit tests using the Fat-Free Framework `Test` class.
 
 ## Installation
 ```
@@ -14,12 +14,6 @@ The idea is that we'll scan one folder (non-recursively) for all files that end 
 
 With this structure in place, simply call `TestManager::runAndReportTests('directory/with/test/files');`.
 
-### Multiple Folders
-If you have more than one folder with tests, you can create an instance of the [Fat-Free Framework `Test` class](https://fatfreeframework.com/3.7/test) and call `TestManager::runTests('a/directory/with/tests', $your_instance_of_Test);` for each directory, then call `TestManager::reportTests($your_instance_of_Test);` at the end.
-
-### Exit Codes
-By default, `runAndReportTests()` and `TestManager::reportTests()` will end the PHP process with an exit code of 1 if there were failed tests, or 0 if all were successful. To disable this behavior and allow the script to continue, set the last parameter to `false`.
-
 ### Extending `TestBase`
 The test classes must extend `TestBase`, directly or indirectly. If indirectly (the test classes extend another class that extends `TestBase`), the constructor of the class(es) in the middle will want to pass an array as the second parameter to the parent constructor of class names that includes their own. This will allow the report to include the correct class and method name of the testing method.
 
@@ -31,6 +25,12 @@ class MyTestBase extends TestBase {
 	}
 }
 ```
+
+### Multiple Folders
+If you have more than one folder with tests, you can create an instance of the [Fat-Free Framework `Test` class](https://fatfreeframework.com/3.7/test) and call `TestManager::runTests('a/directory/with/tests', $your_instance_of_Test);` for each directory, then call `TestManager::reportTests($your_instance_of_Test);` at the end.
+
+### Exit Codes
+By default, `runAndReportTests()` and `reportTests()` will end the PHP process with an exit code of 1 if there were failed tests, or 0 if all were successful. To disable this behavior and allow the script to continue, set the last parameter to `false`.
 
 ## General Example
 `example_dir/ExampleTest.php`:
